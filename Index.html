@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReportIt</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>ReportIt LCU</h1>
+    <p>Your report will be treated with confidentiality.</p>
+    
+    <form id="reportform">
+      <label for="type">Incident Type:</label>
+      <select id="type">
+        <option value="">-- Select --</option>
+        <option>Harassment</option>
+        <option>Discrimination</option>
+        <option>Safety Concern</option>
+        <option>Other</option>
+      </select>
+
+      <label for="details">Incident Details:</label>
+      <textarea id="details" rows="6" required></textarea>
+
+      <label for="location">Location (optional):</label>
+      <input type="text" id="location" />
+
+      <label for="date">Date of Incident:</label>
+      <input type="date" id="date" required />
+
+      <button type="submit">Submit Report</button>
+    </form>
+
+    <p id="confirmation" style="display:none;">Your report has been submitted anonymously.</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
