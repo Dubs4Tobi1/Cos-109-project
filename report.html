@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="report.css">
+</head>
+<body>
+  <div class="content">
+    <img src="FB_IMG_1754152175267.jpg">
+    <h1>SafeSpeak LCU</h1>
+    <p>Confidential reporting for harassment,threats,or unsafe behaviour on campus</p>
+    
+  
+  
+  <form action="" class="container" >
+    <select id="select" name="report">
+      <option value="" disabled selected>Incident Type</option>
+      <option value="Harrasment">Harrasment</option>
+      <option value="Discrimination">Discrimination</option>
+      <option value="Safety Concern">Safety Concern</option>
+      <option value="Others">Others</option>
+    </select>
+
+    <input type="text" id="location" name="location" required placeholder="Location">
+    <textarea id="details" name="details" rows="6" cols="30" required placeholder="Describe the incident..."></textarea>
+
+    <label for="date">Date of  incident:</label>
+    <input type="date" id="date" name="date" required>
+    <button type="submit" class="btn">Submit report</button>
+  </form>
+    
+    <footer class="end">
+    <p><i>...Speak Safely.Speak Up.Powered by LCU.</i></p>
+    </footer>
+  </div>
+  
+
+
+  
+</body>
+</html>
