@@ -46,3 +46,28 @@ button {
 button:hover {
   background-color: #45a049;
 }
+
+/* Added styles for confirmation message */
+#confirmation {
+  display: none;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 1rem;
+  color: #2e7d32;
+  font-weight: bold;
+  opacity: 0;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+  }
