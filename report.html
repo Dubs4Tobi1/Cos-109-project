@@ -1,91 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Submit Report - ReportIt LCU</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f6f9;
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; margin: 0;
+      background:#f4f6f9;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      margin:0;
     }
     .container {
-      background: white; padding: 25px; border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 380px;
+      background:#fff;
+      padding:25px;
+      border-radius:12px;
+      box-shadow:0 4px 15px rgba(0,0,0,.08);
+      width:380px;
     }
-    h1 { color: #2c3e50; margin-bottom: 10px; text-align: center; }
-    label { font-weight: bold; display: block; margin-top: 12px; }
+    h1 {
+      color:#2c3e50;
+      margin-bottom:10px;
+      text-align:center;
+    }
+    label {
+      font-weight:600;
+      display:block;
+      margin-top:12px;
+    }
     textarea, button {
-      width: 100%; padding: 12px; margin-top: 6px;
-      border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;
+      width:100%;
+      padding:12px;
+      margin-top:6px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      font-size:1rem;
     }
     button {
-      background-color: #4caf50; color: white; border: none; margin-top: 14px;
+      background:#4caf50;
+      color:#fff;
+      border:none;
+      margin-top:14px;
     }
-    button:hover { background-color: #43a047; cursor: pointer; }
+    button:hover {
+      background:#43a047;
+      cursor:pointer;
+    }
+    p#user {
+      font-size:0.95rem;
+      color:#555;
+      margin-bottom:10px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Submit a Report</h1>
-    <p id="user"></p>
+    <p id="user">Checking login…</p>
     <label for="details">Incident Details</label>
-    <textarea id="details" placeholder="Describe the incident..." required></textarea>
-    <button onclick="submitReport()">Submit</button>
+    <textarea id="details" placeholder="Describe the incident..." rows="8" required></textarea>
+    <button id="submitBtn">Submit</button>
   </div>
 
   <script type="module">
+    // ✅ Import Firebase SDKs from CDN
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-   // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    // ✅ Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
+      authDomain: "lcucos109.firebaseapp.com",
+      projectId: "lcucos109",
+      storageBucket: "lcucos109.appspot.com",
+      messagingSenderId: "956418186809",
+      appId: "1:956418186809:web:768a35e97a1677c42d77e8"
+    };
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
-  authDomain: "lcucos109.firebaseapp.com",
-  projectId: "lcucos109",
-  storageBucket: "lcucos109.firebasestorage.app",
-  messagingSenderId: "956418186809",
-  appId: "1:956418186809:web:768a35e97a1677c42d77e8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+    // ✅ Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     let matricNumber = localStorage.getItem("matric");
 
+    // ✅ Ensure user is logged in
     onAuthStateChanged(auth, user => {
       if (!user) {
-        window.location.href = "login.html";
+        window.location.href = "index.html"; // redirect to login if not logged in
       } else {
         document.getElementById("user").innerText = "Logged in as: " + matricNumber;
       }
     });
 
-    window.submitReport = function() {
+    // ✅ Handle report submission
+    document.getElementById("submitBtn").addEventListener("click", async () => {
       let details = document.getElementById("details").value.trim();
-      if (!details) return alert("Please enter details.");
+      if (!details) {
+        alert("Please enter details.");
+        return;
+      }
 
-      addDoc(collection(db, "reports"), {
-        matric: matricNumber,
-        details: details,
-        timestamp: serverTimestamp()
-      }).then(() => {
-        window.location.href = "success.html";
-      }).catch(() => {
-        alert("❌ Failed to submit report.");
-      });
-    }
+      try {
+        await addDoc(collection(db, "reports"), {
+          matric: matricNumber,
+          details: details,
+          timestamp: serverTimestamp()
+        });
+        window.location.href = "success.html"; // redirect to success page
+      } catch (e) {
+        alert("❌ Failed to submit report: " + e.message);
+      }
+    });
   </script>
 </body>
 </html>
