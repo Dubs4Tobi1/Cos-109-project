@@ -89,11 +89,10 @@
     <h1>ReportIt LCU</h1>
     <p>Your report will be treated with confidentiality.</p>
     
+    <!-- Visible form -->
     <form id="reportform" name="report" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-      <!-- Hidden field for Netlify -->
       <input type="hidden" name="form-name" value="report" />
 
-      <!-- Honeypot (anti-spam) -->
       <p style="display:none;">
         <label>Don’t fill this out: <input name="bot-field" /></label>
       </p>
@@ -122,6 +121,15 @@
     <p id="confirmation">✅ Your report has been submitted successfully.</p>
   </div>
 
+  <!-- Hidden static form for Netlify detection -->
+  <form name="report" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="report" />
+    <input type="text" name="type" />
+    <textarea name="details"></textarea>
+    <input type="text" name="location" />
+    <input type="date" name="date" />
+  </form>
+
   <script>
     document.getElementById("reportform").addEventListener("submit", function(event) {
       event.preventDefault(); // Stop redirect
@@ -137,7 +145,7 @@
         form.reset();
         document.getElementById("confirmation").style.display = "block";
       })
-      .catch((error) => alert("❌ Something went wrong: " + error));
+      .catch((error) => alert(" Something went wrong: " + error));
     });
   </script>
 </body>
