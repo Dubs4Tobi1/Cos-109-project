@@ -1,4 +1,27 @@
-    <button onclick="signup()">Sign Up</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - ReportIt LCU</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+    .container { background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,.08); width:320px; text-align:center; }
+    h1 { color:#2c3e50; margin-bottom:10px; }
+    input, button { width:100%; padding:12px; margin-top:10px; border-radius:8px; border:1px solid #ccc; font-size:1rem; }
+    button { background:#4caf50; color:#fff; border:none; }
+    button:hover { background:#43a047; cursor:pointer; }
+    p#message { font-size:.9rem; min-height:1.2em; }
+    a { display:block; margin-top:10px; text-decoration:none; color:#4caf50; }
+    a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Create Account</h1>
+    <input type="text" id="matric" placeholder="Matric Number" required>
+    <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+    <button id="signupBtn">Sign Up</button>
     <p id="message"></p>
     <a href="index.html">Already have an account? Login</a>
   </div>
@@ -7,57 +30,44 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
-  authDomain: "lcucos109.firebaseapp.com",
-  projectId: "lcucos109",
-  storageBucket: "lcucos109.firebasestorage.app",
-  messagingSenderId: "956418186809",
-  appId: "1:956418186809:web:768a35e97a1677c42d77e8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
+      authDomain: "lcucos109.firebaseapp.com",
+      projectId: "lcucos109",
+      storageBucket: "lcucos109.appspot.com",
+      messagingSenderId: "956418186809",
+      appId: "1:956418186809:web:768a35e97a1677c42d77e8"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    window.signup = function() {
-      let matric = document.getElementById("matric").value.trim();
-      let password = document.getElementById("password").value;
-      let message = document.getElementById("message");
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const matric = document.getElementById("matric").value.trim();
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("message");
 
       if (!matric || !password) {
-        message.style.color = "red";
-        message.innerText = "Please fill in all fields.";
+        msg.style.color = "red";
+        msg.textContent = "Please fill in all fields.";
         return;
       }
 
-      let email = matric.replace(/\//g, "_") + "@lcu.edu";
+      const email = matric.replace(/\//g, "_") + "@lcu.edu";
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          message.style.color = "green";
-          message.innerText = "✅ Account created! Redirecting to login...";
-          setTimeout(() => { window.location.href = "index.html"; }, 2000);
-        })
-        .catch(err => {
-          message.style.color = "red";
-          if (err.code === "auth/email-already-in-use") {
-            message.innerText = "This matric number is already registered.";
-          } else if (err.code === "auth/weak-password") {
-            message.innerText = "Password should be at least 6 characters.";
-          } else {
-            message.innerText = "Error: " + err.message;
-          }
-        });
-    }
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        msg.style.color = "green";
+        msg.textContent = "✅ Account created! Redirecting to login...";
+        setTimeout(() => window.location.href = "index.html", 1500);
+      } catch (err) {
+        msg.style.color = "red";
+        if (err.code === "auth/email-already-in-use") msg.textContent = "This matric number is already registered.";
+        else if (err.code === "auth/weak-password") msg.textContent = "Password should be at least 6 characters.";
+        else if (err.code === "auth/operation-not-allowed") msg.textContent = "Enable Email/Password in Firebase Authentication.";
+        else msg.textContent = "Error: " + err.message;
+      }
+    });
   </script>
 </body>
 </html>
