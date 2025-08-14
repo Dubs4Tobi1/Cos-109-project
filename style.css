@@ -7,16 +7,22 @@ body {
 
 .container {
   max-width: 500px;
-  margin: 60px auto;
+  margin: 40px auto;
   padding: 20px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 h1 {
   color: #333;
   text-align: center;
+  margin-bottom: 10px;
+}
+
+p {
+  text-align: center;
+  color: #555;
 }
 
 form {
@@ -27,6 +33,7 @@ form {
 
 label {
   font-weight: bold;
+  margin-top: 8px;
 }
 
 input, select, textarea, button {
@@ -34,6 +41,11 @@ input, select, textarea, button {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
 }
 
 button {
@@ -41,33 +53,33 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 button:hover {
   background-color: #45a049;
+  transform: translateY(-1px);
 }
 
-/* Added styles for confirmation message */
-#confirmation {
-  display: none;
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #e8f5e9;
-  border: 1px solid #4caf50;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 1rem;
-  color: #2e7d32;
-  font-weight: bold;
-  opacity: 0;
+button:active {
+  background-color: #3d8c40;
+  transform: translateY(1px);
 }
 
-.fade-in {
-  animation: fadeIn 0.8s forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .container {
+    margin: 20px;
+    padding: 15px;
   }
+
+  h1 {
+    font-size: 1.5rem;
   }
+
+  button {
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
