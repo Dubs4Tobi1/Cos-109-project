@@ -36,7 +36,7 @@
     <input type="password" id="password" placeholder="Password" required>
     <button onclick="signup()">Sign Up</button>
     <p id="message"></p>
-    <a href="login.html">Already have an account? Login</a>
+    <a href="index.html">Already have an account? Login</a>
   </div>
 
   <script type="module">
@@ -73,7 +73,7 @@
         .then(() => {
           message.style.color = "green";
           message.innerText = "✅ Account created! Redirecting to login...";
-          setTimeout(() => { window.location.href = "login.html"; }, 2000);
+          setTimeout(() => { window.location.href = "index.html"; }, 2000);
         })
         .catch(err => {
           message.style.color = "red";
