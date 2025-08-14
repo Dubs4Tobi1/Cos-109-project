@@ -1,36 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Success - ReportIt LCU</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f6f9;
-      display: flex; justify-content: center; align-items: center;
-      height: 100vh; margin: 0;
+      background:#f4f6f9;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      margin:0;
     }
     .container {
-      background: white; padding: 25px; border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 320px; text-align: center;
+      background:#fff;
+      padding:25px;
+      border-radius:12px;
+      box-shadow:0 4px 15px rgba(0,0,0,.08);
+      width:320px;
+      text-align:center;
     }
-    h1 { color: #2c3e50; margin-bottom: 10px; }
-    p { font-size: 1.1rem; color: green; }
-    a {
-      display: inline-block; margin-top: 15px; padding: 10px 15px;
-      background-color: #4caf50; color: white; border-radius: 6px;
-      text-decoration: none;
+    h1 {
+      color:#2c3e50;
+      margin-bottom:10px;
     }
-    a:hover { background-color: #43a047; }
+    p {
+      font-size:1.05rem;
+      color:green;
+    }
+    a.btn {
+      display:inline-block;
+      margin-top:15px;
+      padding:10px 15px;
+      background:#4caf50;
+      color:#fff;
+      border-radius:6px;
+      text-decoration:none;
+    }
+    a.btn:hover {
+      background:#43a047;
+    }
+    a.alt {
+      display:inline-block;
+      margin-top:15px;
+      padding:10px 15px;
+      background:#2c3e50;
+      color:#fff;
+      border-radius:6px;
+      text-decoration:none;
+      margin-left:8px;
+    }
+    a.alt:hover {
+      background:#1f2a36;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>✅ Success!</h1>
-    <p>Your report has been submitted.</p>
-    <a href="report.html">Submit Another</a>
-    <a href="login.html" style="background-color: #2c3e50; margin-left: 10px;">Log Out</a>
+    <p>Your report has been submitted successfully.</p>
+    <a class="btn" href="report.html">Submit Another</a>
+    <a class="alt" href="index.html">Log Out</a>
   </div>
 </body>
 </html>
