@@ -43,7 +43,13 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    const firebaseConfig = {
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
   apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
   authDomain: "lcucos109.firebaseapp.com",
   projectId: "lcucos109",
@@ -51,6 +57,9 @@
   messagingSenderId: "956418186809",
   appId: "1:956418186809:web:768a35e97a1677c42d77e8"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
