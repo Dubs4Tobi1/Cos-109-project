@@ -47,11 +47,6 @@
       background-color: #fafafa;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #4caf50;
-      box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
-    }
     button {
       padding: 12px;
       background-color: #4caf50;
@@ -66,22 +61,6 @@
     button:hover {
       background-color: #43a047;
     }
-    #confirmation {
-      margin-top: 15px;
-      text-align: center;
-      font-weight: bold;
-      color: #2e7d32;
-      display: none;
-    }
-    @media (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 20px;
-      }
-      input, select, textarea, button {
-        font-size: 0.95rem;
-      }
-    }
   </style>
 </head>
 <body>
@@ -89,9 +68,10 @@
     <h1>ReportIt LCU</h1>
     <p>Your report will be treated with confidentiality.</p>
     
-    <!-- Replace YOUR_FORM_ID with the ID Formspree gives you -->
-    <form id="reportform" action="https://formspree.io/f/xdkdjzwz" method="POST">
-      
+    <!-- Replace YOUR_FORM_ID with your real Formspree ID -->
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="hidden" name="_redirect" value="https://your-site.netlify.app/success.html" />
+
       <label for="type">Incident Type:</label>
       <select id="type" name="type" required>
         <option value="">-- Select --</option>
@@ -112,29 +92,6 @@
 
       <button type="submit">Submit Report</button>
     </form>
-
-    <p id="confirmation">✅ Your report has been submitted successfully.</p>
   </div>
-
-  <script>
-    document.getElementById("reportform").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const form = event.target;
-      fetch(form.action, {
-        method: form.method,
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      })
-      .then(response => {
-        if (response.ok) {
-          form.reset();
-          document.getElementById("confirmation").style.display = "block";
-        } else {
-          alert("❌ There was a problem submitting your report.");
-        }
-      })
-      .catch(() => alert("❌ Could not submit form. Please try again."));
-    });
-  </script>
 </body>
 </html>
