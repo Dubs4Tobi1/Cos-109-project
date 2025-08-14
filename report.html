@@ -1,121 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Submit Report - ReportIt LCU</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background:#f4f6f9;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
-      margin:0;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #4caf50;
+      padding: 15px;
+      color: white;
+      text-align: center;
     }
     .container {
-      background:#fff;
-      padding:25px;
-      border-radius:12px;
-      box-shadow:0 4px 15px rgba(0,0,0,.08);
-      width:380px;
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      margin: 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-      color:#2c3e50;
-      margin-bottom:10px;
-      text-align:center;
+    h2 {
+      text-align: center;
+      color: #333;
     }
     label {
-      font-weight:600;
-      display:block;
-      margin-top:12px;
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
     }
-    textarea, button {
-      width:100%;
-      padding:12px;
-      margin-top:6px;
-      border-radius:8px;
-      border:1px solid #ccc;
-      font-size:1rem;
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    textarea {
+      resize: vertical;
     }
     button {
-      background:#4caf50;
-      color:#fff;
-      border:none;
-      margin-top:14px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      margin-top: 20px;
+      cursor: pointer;
     }
     button:hover {
-      background:#43a047;
-      cursor:pointer;
+      background: #43a047;
     }
-    p#user {
-      font-size:0.95rem;
-      color:#555;
-      margin-bottom:10px;
+    #user {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 15px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Submit a Report</h1>
-    <p id="user">Checking login…</p>
-    <label for="details">Incident Details</label>
-    <textarea id="details" placeholder="Describe the incident..." rows="8" required></textarea>
-    <button id="submitBtn">Submit</button>
-  </div>
 
-  <script type="module">
-    // ✅ Import Firebase SDKs from CDN
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<header>
+  <h1>ReportIt LCU</h1>
+</header>
 
-    // ✅ Your Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
-      authDomain: "lcucos109.firebaseapp.com",
-      projectId: "lcucos109",
-      storageBucket: "lcucos109.appspot.com",
-      messagingSenderId: "956418186809",
-      appId: "1:956418186809:web:768a35e97a1677c42d77e8"
-    };
+<div class="container">
+  <h2>Submit a Report</h2>
+  <p id="user">Checking login...</p>
 
-    // ✅ Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  <label for="incidentType">Incident Type</label>
+  <select id="incidentType" required>
+    <option value="">-- Select Incident Type --</option>
+    <option value="Security">Security</option>
+    <option value="Maintenance">Maintenance</option>
+    <option value="Academic">Academic</option>
+    <option value="Other">Other</option>
+  </select>
 
-    let matricNumber = localStorage.getItem("matric");
+  <label for="location">Location</label>
+  <input type="text" id="location" placeholder="Enter location" required />
 
-    // ✅ Ensure user is logged in
-    onAuthStateChanged(auth, user => {
-      if (!user) {
-        window.location.href = "index.html"; // redirect to login if not logged in
-      } else {
-        document.getElementById("user").innerText = "Logged in as: " + matricNumber;
-      }
-    });
+  <label for="incidentDate">Date of Incident</label>
+  <input type="date" id="incidentDate" required />
 
-    // ✅ Handle report submission
-    document.getElementById("submitBtn").addEventListener("click", async () => {
-      let details = document.getElementById("details").value.trim();
-      if (!details) {
-        alert("Please enter details.");
-        return;
-      }
+  <label for="details">Incident Details</label>
+  <textarea id="details" placeholder="Describe the incident..." rows="5" required></textarea>
 
-      try {
-        await addDoc(collection(db, "reports"), {
-          matric: matricNumber,
-          details: details,
-          timestamp: serverTimestamp()
-        });
-        window.location.href = "success.html"; // redirect to success page
-      } catch (e) {
-        alert("❌ Failed to submit report: " + e.message);
-      }
-    });
-  </script>
+  <button id="submitBtn">Submit Report</button>
+</div>
+
+<script type="module">
+  // Firebase imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
+    authDomain: "lcucos109.firebaseapp.com",
+    projectId: "lcucos109",
+    storageBucket: "lcucos109.appspot.com",
+    messagingSenderId: "956418186809",
+    appId: "1:956418186809:web:768a35e97a1677c42d77e8"
+  };
+
+  // Init Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let matricNumber = localStorage.getItem("matric");
+
+  // Check login status
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "index.html"; // redirect to login
+    } else {
+      document.getElementById("user").innerText = "Logged in as: " + matricNumber;
+    }
+  });
+
+  // Submit report
+  document.getElementById("submitBtn").addEventListener("click", async () => {
+    const type = document.getElementById("incidentType").value.trim();
+    const location = document.getElementById("location").value.trim();
+    const date = document.getElementById("incidentDate").value;
+    const details = document.getElementById("details").value.trim();
+
+    if (!type || !location || !date || !details) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "reports"), {
+        matric: matricNumber,
+        type: type,
+        location: location,
+        date: date,
+        details: details,
+        timestamp: serverTimestamp()
+      });
+      window.location.href = "success.html";
+    } catch (error) {
+      alert("❌ Failed to submit report: " + error.message);
+    }
+  });
+</script>
+
 </body>
 </html>
