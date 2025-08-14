@@ -12,41 +12,63 @@
     <p>Your report will be treated with confidentiality.</p>
     
     <form
-      id="reportform"
-      name="report"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      action="/success.html"
-    >
-      <!-- Hidden form name for Netlify -->
-      <input type="hidden" name="form-name" value="report" />
+  id="reportform"
+  name="report"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+>
+  <input type="hidden" name="form-name" value="report" />
 
-      <!-- Honeypot spam field -->
-      <p style="display:none;">
-        <label>Don’t fill this out: <input name="bot-field" /></label>
-      </p>
+  <!-- Honeypot for spam prevention -->
+  <p style="display:none;">
+    <label>Don’t fill this out: <input name="bot-field" /></label>
+  </p>
 
-      <label for="type">Incident Type:</label>
-      <select id="type" name="type" required>
-        <option value="">-- Select --</option>
-        <option>Harassment</option>
-        <option>Discrimination</option>
-        <option>Safety Concern</option>
-        <option>Other</option>
-      </select>
+  <label for="type">Incident Type:</label>
+  <select id="type" name="type" required>
+    <option value="">-- Select --</option>
+    <option>Harassment</option>
+    <option>Discrimination</option>
+    <option>Safety Concern</option>
+    <option>Other</option>
+  </select>
 
-      <label for="details">Incident Details:</label>
-      <textarea id="details" name="details" rows="6" required></textarea>
+  <label for="details">Incident Details:</label>
+  <textarea id="details" name="details" rows="6" required></textarea>
 
-      <label for="location">Location (optional):</label>
-      <input type="text" id="location" name="location" />
+  <label for="location">Location (optional):</label>
+  <input type="text" id="location" name="location" />
 
-      <label for="date">Date of Incident:</label>
-      <input type="date" id="date" name="date" required />
+  <label for="date">Date of Incident:</label>
+  <input type="date" id="date" name="date" required />
 
-      <button type="submit">Submit Report</button>
-    </form>
+  <button type="submit">Submit Report</button>
+</form>
+
+<!-- Success message -->
+<p id="confirmation" style="display:none; color:green; font-weight:bold; text-align:center;">
+  ✅ Your report has been submitted successfully.
+</p>
+
+<script>
+document.getElementById("reportform").addEventListener("submit", function (event) {
+  event.preventDefault(); // Stop normal redirect
+
+  const form = event.target;
+  const formData = new FormData(form);
+
+  fetch("/", {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+    form.reset();
+    document.getElementById("confirmation").style.display = "block";
+  })
+  .catch((error) => alert("Something went wrong: " + error));
+});
+</script>
   </div>
 </body>
         </html>
