@@ -1,50 +1,36 @@
-  <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ReportIt</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>ReportIt LCU</h1>
-    <p>Your report will be treated with confidentiality.</p>
-    
-    <form id="reportform">
-      <label for="type">Incident Type:</label>
-      <select id="type">
-        <option value="">-- Select --</option>
-        <option>Harassment</option>
-        <option>Discrimination</option>
-        <option>Safety Concern</option>
-        <option>Other</option>
-      </select>
+<form
+  id="reportform"
+  name="report"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  action="/success.html"
+>
+  <!-- REQUIRED for Netlify to identify the form -->
+  <input type="hidden" name="form-name" value="report" />
 
-      <label for="details">Incident Details:</label>
-      <textarea id="details" rows="6" required></textarea>
+  <!-- Honeypot field to reduce spam (kept hidden) -->
+  <p style="display:none;">
+    <label>Don’t fill this out: <input name="bot-field" /></label>
+  </p>
 
-      <label for="location">Location (optional):</label>
-      <input type="text" id="location" />
+  <label for="type">Incident Type:</label>
+  <select id="type" name="type" required>
+    <option value="">-- Select --</option>
+    <option>Harassment</option>
+    <option>Discrimination</option>
+    <option>Safety Concern</option>
+    <option>Other</option>
+  </select>
 
-      <label for="date">Date of Incident:</label>
-      <input type="date" id="date" required />
+  <label for="details">Incident Details:</label>
+  <textarea id="details" name="details" rows="6" required></textarea>
 
-      <button type="submit">Submit Report</button>
-    </form>
+  <label for="location">Location (optional):</label>
+  <input type="text" id="location" name="location" />
 
-    <p id="confirmation" style="display:none;">Your report has been submitted anonymously.</p>
-  </div>
+  <label for="date">Date of Incident:</label>
+  <input type="date" id="date" name="date" required />
 
-  <script>
-    document.getElementById("reportform").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const confirmation = document.getElementById("confirmation");
-        confirmation.textContent = "✅ Your report has been submitted. Thank you.";
-        confirmation.style.display = "block";
-        confirmation.classList.add("fade-in");
-        this.reset();
-    });
-  </script>
-</body>
-</html>
+  <button type="submit">Submit Report</button>
+</form>
