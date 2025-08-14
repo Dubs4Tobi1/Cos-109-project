@@ -5,28 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Login - ReportIt LCU</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f9;
-      display: flex; justify-content: center; align-items: center;
-      height: 100vh; margin: 0;
-    }
-    .container {
-      background: white; padding: 25px; border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 320px; text-align: center;
-    }
-    h1 { color: #2c3e50; margin-bottom: 10px; }
-    input, button {
-      width: 100%; padding: 12px; margin-top: 10px;
-      border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;
-    }
-    button {
-      background-color: #4caf50; color: white; border: none;
-    }
-    button:hover { background-color: #43a047; cursor: pointer; }
-    p#error { color: red; font-size: 0.9rem; }
-    a { display: block; margin-top: 10px; text-decoration: none; color: #4caf50; }
-    a:hover { text-decoration: underline; }
+    body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+    .container { background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,.08); width:320px; text-align:center; }
+    h1 { color:#2c3e50; margin-bottom:10px; }
+    input, button { width:100%; padding:12px; margin-top:10px; border-radius:8px; border:1px solid #ccc; font-size:1rem; }
+    button { background:#4caf50; color:#fff; border:none; }
+    button:hover { background:#43a047; cursor:pointer; }
+    p#error { color:red; font-size:.9rem; min-height:1.2em; }
+    a { display:block; margin-top:10px; text-decoration:none; color:#4caf50; }
+    a:hover { text-decoration:underline; }
   </style>
 </head>
 <body>
@@ -34,7 +21,7 @@
     <h1>Student Login</h1>
     <input type="text" id="matric" placeholder="Matric Number" required>
     <input type="password" id="password" placeholder="Password" required>
-    <button onclick="login()">Login</button>
+    <button id="loginBtn">Login</button>
     <p id="error"></p>
     <a href="signup.html">Don’t have an account? Sign up</a>
   </div>
@@ -43,41 +30,37 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // Import the functions you need from the SDKs you need
-    import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
-  authDomain: "lcucos109.firebaseapp.com",
-  projectId: "lcucos109",
-  storageBucket: "lcucos109.firebasestorage.app",
-  messagingSenderId: "956418186809",
-  appId: "1:956418186809:web:768a35e97a1677c42d77e8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7mlUZobP2JB9hIOJ_Ev2MM14J9Gi_RnI",
+      authDomain: "lcucos109.firebaseapp.com",
+      projectId: "lcucos109",
+      storageBucket: "lcucos109.appspot.com",
+      messagingSenderId: "956418186809",
+      appId: "1:956418186809:web:768a35e97a1677c42d77e8"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    window.login = function() {
-      let matric = document.getElementById("matric").value.trim();
-      let password = document.getElementById("password").value;
-      let email = matric.replace(/\//g, "_") + "@lcu.edu";
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const matric = document.getElementById("matric").value.trim();
+      const password = document.getElementById("password").value;
+      const email = matric.replace(/\//g, "_") + "@lcu.edu";
+      const err = document.getElementById("error");
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          localStorage.setItem("matric", matric);
-          window.location.href = "report.html";
-        })
-        .catch(() => {
-          document.getElementById("error").innerText = "Invalid matric number or password.";
-        });
-    }
+      if (!matric || !password) {
+        err.textContent = "Enter matric and password.";
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        localStorage.setItem("matric", matric);
+        window.location.href = "report.html";
+      } catch (e) {
+        err.textContent = "Invalid matric number or password.";
+      }
+    });
   </script>
 </body>
 </html>
