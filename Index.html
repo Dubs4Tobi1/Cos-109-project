@@ -3,72 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ReportIt</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>ReportIt LCU</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 520px;
+      margin: 50px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    input, select, textarea {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background-color: #fafafa;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #4caf50;
+      box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+    }
+    button {
+      padding: 12px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #43a047;
+    }
+    #confirmation {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: #2e7d32;
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+      input, select, textarea, button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>ReportIt LCU</h1>
     <p>Your report will be treated with confidentiality.</p>
     
-    <form
-  id="reportform"
-  name="report"
-  method="POST"
-  data-netlify="true"
-  netlify-honeypot="bot-field"
->
-  <input type="hidden" name="form-name" value="report" />
+    <form id="reportform" name="report" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <!-- Hidden field for Netlify -->
+      <input type="hidden" name="form-name" value="report" />
 
-  <!-- Honeypot for spam prevention -->
-  <p style="display:none;">
-    <label>Don’t fill this out: <input name="bot-field" /></label>
-  </p>
+      <!-- Honeypot (anti-spam) -->
+      <p style="display:none;">
+        <label>Don’t fill this out: <input name="bot-field" /></label>
+      </p>
 
-  <label for="type">Incident Type:</label>
-  <select id="type" name="type" required>
-    <option value="">-- Select --</option>
-    <option>Harassment</option>
-    <option>Discrimination</option>
-    <option>Safety Concern</option>
-    <option>Other</option>
-  </select>
+      <label for="type">Incident Type:</label>
+      <select id="type" name="type" required>
+        <option value="">-- Select --</option>
+        <option>Harassment</option>
+        <option>Discrimination</option>
+        <option>Safety Concern</option>
+        <option>Other</option>
+      </select>
 
-  <label for="details">Incident Details:</label>
-  <textarea id="details" name="details" rows="6" required></textarea>
+      <label for="details">Incident Details:</label>
+      <textarea id="details" name="details" rows="6" required></textarea>
 
-  <label for="location">Location (optional):</label>
-  <input type="text" id="location" name="location" />
+      <label for="location">Location (optional):</label>
+      <input type="text" id="location" name="location" />
 
-  <label for="date">Date of Incident:</label>
-  <input type="date" id="date" name="date" required />
+      <label for="date">Date of Incident:</label>
+      <input type="date" id="date" name="date" required />
 
-  <button type="submit">Submit Report</button>
-</form>
+      <button type="submit">Submit Report</button>
+    </form>
 
-<!-- Success message -->
-<p id="confirmation" style="display:none; color:green; font-weight:bold; text-align:center;">
-  ✅ Your report has been submitted successfully.
-</p>
-
-<script>
-document.getElementById("reportform").addEventListener("submit", function (event) {
-  event.preventDefault(); // Stop normal redirect
-
-  const form = event.target;
-  const formData = new FormData(form);
-
-  fetch("/", {
-    method: "POST",
-    body: formData
-  })
-  .then(() => {
-    form.reset();
-    document.getElementById("confirmation").style.display = "block";
-  })
-  .catch((error) => alert("Something went wrong: " + error));
-});
-</script>
+    <p id="confirmation">✅ Your report has been submitted successfully.</p>
   </div>
+
+  <script>
+    document.getElementById("reportform").addEventListener("submit", function(event) {
+      event.preventDefault(); // Stop redirect
+
+      const form = event.target;
+      const formData = new FormData(form);
+
+      fetch("/", {
+        method: "POST",
+        body: formData
+      })
+      .then(() => {
+        form.reset();
+        document.getElementById("confirmation").style.display = "block";
+      })
+      .catch((error) => alert("❌ Something went wrong: " + error));
+    });
+  </script>
 </body>
-        </html>
+</html>
