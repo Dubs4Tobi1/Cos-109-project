@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Report - ReportIt LCU</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; margin: 0;
+    }
+    .container {
+      background: white; padding: 25px; border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 380px;
+    }
+    h1 { color: #2c3e50; margin-bottom: 10px; text-align: center; }
+    label { font-weight: bold; display: block; margin-top: 12px; }
+    textarea, button {
+      width: 100%; padding: 12px; margin-top: 6px;
+      border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;
+    }
+    button {
+      background-color: #4caf50; color: white; border: none; margin-top: 14px;
+    }
+    button:hover { background-color: #43a047; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Submit a Report</h1>
+    <p id="user"></p>
+    <label for="details">Incident Details</label>
+    <textarea id="details" placeholder="Describe the incident..." required></textarea>
+    <button onclick="submitReport()">Submit</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // 🔹 Replace with your Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let matricNumber = localStorage.getItem("matric");
+
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        document.getElementById("user").innerText = "Logged in as: " + matricNumber;
+      }
+    });
+
+    window.submitReport = function() {
+      let details = document.getElementById("details").value.trim();
+      if (!details) return alert("Please enter details.");
+
+      addDoc(collection(db, "reports"), {
+        matric: matricNumber,
+        details: details,
+        timestamp: serverTimestamp()
+      }).then(() => {
+        window.location.href = "success.html";
+      }).catch(() => {
+        alert("❌ Failed to submit report.");
+      });
+    }
+  </script>
+</body>
+</html>

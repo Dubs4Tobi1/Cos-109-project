@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Login - ReportIt LCU</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0;
+    }
+    .container {
+      background: white; padding: 25px; border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 320px; text-align: center;
+    }
+    h1 { color: #2c3e50; margin-bottom: 10px; }
+    input, button {
+      width: 100%; padding: 12px; margin-top: 10px;
+      border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;
+    }
+    button {
+      background-color: #4caf50; color: white; border: none;
+    }
+    button:hover { background-color: #43a047; cursor: pointer; }
+    p#error { color: red; font-size: 0.9rem; }
+    a { display: block; margin-top: 10px; text-decoration: none; color: #4caf50; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Student Login</h1>
+    <input type="text" id="matric" placeholder="Matric Number" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <p id="error"></p>
+    <a href="signup.html">Don’t have an account? Sign up</a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // 🔹 Replace with your Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.login = function() {
+      let matric = document.getElementById("matric").value.trim();
+      let password = document.getElementById("password").value;
+      let email = matric.replace(/\//g, "_") + "@lcu.edu";
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          localStorage.setItem("matric", matric);
+          window.location.href = "report.html";
+        })
+        .catch(() => {
+          document.getElementById("error").innerText = "Invalid matric number or password.";
+        });
+    }
+  </script>
+</body>
+</html>
